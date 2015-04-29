@@ -1,0 +1,18 @@
+CREATE TABLE iPlayer ( ID int (1), Place VARCHAR(10), Wealth int(8), PRIMARY KEY (ID) );
+CREATE TABLE iTreasure ( Place VARCHAR(10), Gold int(8), PRIMARY KEY (Place) );
+CREATE TABLE iMap ( Place VARCHAR(10), treasurePlace VARCHAR(10), PRIMARY KEY (Place) );
+CREATE TABLE iCity ( Place VARCHAR(10), Cost int(8), PRIMARY KEY (Place) );
+
+CREATE TABLE Player ( ID int (1), Place VARCHAR(10), Wealth int(8), PRIMARY KEY (ID) );
+CREATE TABLE Treasure ( Place VARCHAR(10), Gold int(8), PRIMARY KEY (Place) );
+CREATE TABLE Map ( Place VARCHAR(10), treasurePlace VARCHAR(10), PRIMARY KEY (Place) );
+CREATE TABLE City ( Place VARCHAR(10), Cost int(8), PRIMARY KEY (Place) );
+
+LOAD DATA LOCAL INFILE 'treasure.txt' INTO TABLE iTreasure;
+LOAD DATA LOCAL INFILE 'city.txt' INTO TABLE iCity;
+LOAD DATA LOCAL INFILE 'map.txt' INTO TABLE iMap;    
+
+INSERT INTO Player SELECT * FROM iPlayer;
+INSERT INTO Treasure SELECT * FROM iTreasure;
+INSERT INTO Map SELECT * FROM iMap;
+INSERT INTO City SELECT * FROM iCity;

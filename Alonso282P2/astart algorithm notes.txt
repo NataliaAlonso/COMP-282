@@ -1,0 +1,85 @@
+public void getPoint(int x, int y){
+	if(x%20 == 0 && y%20 == 0 )
+	{
+		return new Point(x,y); 
+	}
+	else
+	{
+		if(x%20 < 10){x = x - x%20;}
+		if(x%20 >= 10){x = x + 20 - x%20;}
+		if(y%20 < 10){y = y - y%20;}
+		if(y%20 >= 10){y = y + 20 - y%20;}
+	}
+	return new Point(x,y);
+}
+
+public Stack AstarPath(Point start, Point destination){
+	
+	animatePanel.clearTemporaryDrawables();
+            
+	Marker m = new Marker((int)start.getX(),(int)start.getY(), Color.BLUE);
+	m.setSize(4);
+	animatePanel.addTemporaryDrawable(m);
+	
+	m = new Marker((int)destination.getX(),(int)destination.getY(), Color.BLUE);
+	m.setSize(4);
+	animatePanel.addTemporaryDrawable(m);
+   
+	openList.add(new Node((int)start.getX(),(int)start.getY(),(int) Math.sqrt(Math.pow(wayPoints.get(start).getX()-wayPoints.get(destination).getX(),2)+Math.pow(wayPoints.get(start).getY()-wayPoints.get(destination).getY(),2)+Math.pow(wayPoints.get(start).getHeight()-wayPoints.get(destination).getHeight(),2)),current));
+	HSOpenList.add(current);
+	boolean cont = true;
+	noPath = false;		
+	while(cont)       // Player continues to their destination even when they have zero or negative strength or wealth
+	{
+		checkStateToWait();
+		if(openList.size()>0){
+			
+			currentNode = openList.poll();
+			current = new Point(currentNode.getX(),currentNode.getY());
+
+			HSOpenList.remove(current);
+			closedList.put(current,currentNode.getBack());
+			
+			Marker cm = new Marker((int)current.getX(),(int)current.getY(), Color.gray );
+			cm.setSize(2);
+			animatePanel.addTemporaryDrawable(cm);
+
+			int numNeighbors = wayPoints.get(current).getNeighbors();
+			for(int i = 0; i < numNeighbors; i++){
+
+				Point tempPoint = wayPoints.get(current).getNeighborList().get(i);
+				if ((tempPoint.getX() == destination.getX()) && (tempPoint.getY() == destination.getY())){
+					i = numNeighbors+1;
+					cont = false;
+				}
+				else{
+					Node tempNode = new Node((int)tempPoint.getX(),(int)tempPoint.getY(),currentNode.getDistance()+(int) Math.sqrt(Math.pow(wayPoints.get(tempPoint).getX()-wayPoints.get(current).getX(),2)+Math.pow(wayPoints.get(tempPoint).getY()-wayPoints.get(current).getY(),2)+Math.pow(wayPoints.get(tempPoint).getHeight()-wayPoints.get(current).getHeight(),2))+(int) Math.sqrt(Math.pow(wayPoints.get(tempPoint).getX()-wayPoints.get(destination).getX(),2)+Math.pow(wayPoints.get(tempPoint).getY()-wayPoints.get(destination).getY(),2)+Math.pow(wayPoints.get(tempPoint).getHeight()-wayPoints.get(destination).getHeight(),2)),current);
+					if( HSOpenList.contains(tempPoint)!=true && closedList.containsKey(tempPoint)!=true ){
+						openList.add(tempNode);
+						Marker om = new Marker((int)tempPoint.getX(),(int)tempPoint.getY(), Color.WHITE);
+						om.setSize(3);
+						animatePanel.addTemporaryDrawable(om);  
+					}
+				}
+			} 
+		}
+		else{
+			cont = false;
+			noPath = true;
+		}                   
+	}
+	Stack<Point> pathStack = new Stack<Point>();
+	if(noPath == false){
+		Stack<Point> pathStack = new Stack<Point>();
+
+		pathStack.add(destination);
+		while(current != start){
+			pathStack.add(current);
+			current = closedList.get(current);
+	}
+	return pathStack;
+}
+eucDist(,)
+public int eucDist(Point a, Point b){
+	return (int) Math.sqrt(Math.pow(wayPoints.get(a).getX()-wayPoints.get(b).getX(),2)+Math.pow(wayPoints.get(a).getY()-wayPoints.get(b).getY(),2)+Math.pow(wayPoints.get(a).getHeight()-wayPoints.get(b).getHeight(),2));
+}

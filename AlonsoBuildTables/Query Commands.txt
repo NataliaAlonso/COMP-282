@@ -1,0 +1,243 @@
+void Point getPoint(int p){
+	try { 
+            Connection conn; 
+            Statement stmt; 
+            ResultSet res;
+	    int x,y; 
+            // load Connector/J 
+            //Driver d = (Driver)Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+            // establish connection 
+            conn = DriverManager.getConnection("jdbc:mysql://vrlab.ecs.csun.edu/alonso64db", "alonso64", "natalia866"); 
+           // execute SELECT query 
+            stmt = conn.createStatement(); 
+            res = stmt.executeQuery("SELECT Place FROM Player WHERE ID = "+ p);
+            // process results 
+            while (res.next()) { 
+                String place = res.getString("Place"); 
+                Scanner s = new Scanner(place);
+                x = s.nextInt();
+                y = s.nextInt();
+            } 
+            res.close();
+	    return new Point(x,y); 
+        } 
+        catch (Exception e) { 
+            System.out.println("Error: " + e); 
+        }	
+}
+
+public int getWealth(int p){
+	try { 
+            Connection conn; 
+            Statement stmt; 
+            ResultSet res;
+	    int g; 
+            // load Connector/J 
+            //Driver d = (Driver)Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+            // establish connection 
+            conn = DriverManager.getConnection("jdbc:mysql://vrlab.ecs.csun.edu/alonso64db", "alonso64", "natalia866"); 
+           // execute SELECT query 
+            stmt = conn.createStatement(); 
+            res = stmt.executeQuery("SELECT Wealth FROM Player WHERE ID = "+ p);
+            // process results 
+            while (res.next()) { 
+               g = res.getInt("Cost");
+            } 
+            res.close();
+	    return g;
+        } 
+        catch (Exception e) { 
+            System.out.println("Error: " + e); 
+        }
+	return 0;	
+}
+
+void int getCost(int x, int y){
+	try { 
+            Connection conn; 
+            Statement stmt; 
+            ResultSet res;
+	    int g=0; 
+            // load Connector/J 
+            //Driver d = (Driver)Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+            // establish connection 
+            conn = DriverManager.getConnection("jdbc:mysql://vrlab.ecs.csun.edu/alonso64db", "alonso64", "natalia866"); 
+           // execute SELECT query 
+            stmt = conn.createStatement(); 
+
+            res = stmt.executeQuery("SELECT Cost FROM City WHERE Place = '"+x+" "+y+"'");
+            // process results 
+            while (res.next()) { 
+               g = res.getInt("Cost");
+            } 
+            res.close();
+	    return g;
+        } 
+        catch (Exception e) { 
+            System.out.println("Error: " + e); 
+        }	
+}
+
+void int getTreasure(int x, int y){
+	try { 
+            Connection conn; 
+            Statement stmt; 
+            ResultSet res;
+	    int g=0; 
+            // load Connector/J 
+            //Driver d = (Driver)Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+            // establish connection 
+            conn = DriverManager.getConnection("jdbc:mysql://vrlab.ecs.csun.edu/alonso64db", "alonso64", "natalia866"); 
+           // execute SELECT query 
+            stmt = conn.createStatement();
+
+            res = stmt.executeQuery("SELECT Gold FROM Treasure WHERE Place = '"+x+" "+y+"'");
+            // process results 
+            while (res.next()) { 
+               g = res.getInt("Gold");
+            } 
+            res.close();
+            return g;
+        } 
+        catch (Exception e) { 
+            System.out.println("Error: " + e); 
+        }
+}
+
+void Point getTPoint(int x, int y){
+	try { 
+            Connection conn; 
+            Statement stmt; 
+            ResultSet res;
+	    int mx=0;
+            int my=0; 
+            // load Connector/J 
+            //Driver d = (Driver)Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+            // establish connection 
+            conn = DriverManager.getConnection("jdbc:mysql://vrlab.ecs.csun.edu/alonso64db", "alonso64", "natalia866"); 
+           // execute SELECT query 
+            stmt = conn.createStatement();
+            res = stmt.executeQuery("SELECT treasurePlace FROM Map WHERE Place = '"+x+" "+y+"'");
+            // process results 
+            while (res.next()) { 
+                String place = res.getString("treasurePlace"); 
+                Scanner s = new Scanner(place);
+                mx = s.nextInt();
+                my = s.nextInt();
+            } 
+            res.close();
+	    return new Point(x,y); 
+        } 
+        catch (Exception e) { 
+            System.out.println("Error: " + e); 
+        }
+}
+
+void updatePlayerTable(int x, int y, int i){
+        try { 
+            Connection conn; 
+            Statement stmt; 
+            // load Connector/J 
+            //Driver d = (Driver)Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+            // establish connection 
+            conn = DriverManager.getConnection("jdbc:mysql://vrlab.ecs.csun.edu/alonso64db", "alonso64", "natalia866"); 
+           // execute SELECT query 
+            stmt = conn.createStatement();
+            String u = "update Player set Place = '"+x+" "+y+"' where ID = '"+i+"'";
+            stmt.executeUpdate(u);
+             
+        } 
+        catch (Exception e) { 
+            System.out.println("Error: " + e); 
+        }
+}
+
+void updateWealth(int w, int i){
+        try { 
+            Connection conn; 
+            Statement stmt; 
+            // load Connector/J 
+            //Driver d = (Driver)Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+            // establish connection 
+            conn = DriverManager.getConnection("jdbc:mysql://vrlab.ecs.csun.edu/alonso64db", "alonso64", "natalia866"); 
+           // execute SELECT query 
+            stmt = conn.createStatement();
+            String u = "update Player set Wealth = '"+w+"' where ID = '"+i+"'";
+            stmt.executeUpdate(u);
+             
+        } 
+        catch (Exception e) { 
+            System.out.println("Error: " + e); 
+        }
+}
+
+void updateTreasureTable(int x, int y){
+        try { 
+            Connection conn; 
+            Statement stmt; 
+            // load Connector/J 
+            //Driver d = (Driver)Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+            // establish connection 
+            conn = DriverManager.getConnection("jdbc:mysql://vrlab.ecs.csun.edu/alonso64db", "alonso64", "natalia866"); 
+           // execute SELECT query 
+            stmt = conn.createStatement();
+            String u = "update Treasure set Gold = 0 where Place = '"+x+" "+y+"'";
+            stmt.executeUpdate(u);
+             
+        } 
+        catch (Exception e) { 
+            System.out.println("Error: " + e); 
+        }
+}
+
+void updateMapTable(int x, int y){
+        try { 
+            Connection conn; 
+            Statement stmt; 
+            // load Connector/J 
+            //Driver d = (Driver)Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+            // establish connection 
+            conn = DriverManager.getConnection("jdbc:mysql://vrlab.ecs.csun.edu/alonso64db", "alonso64", "natalia866"); 
+           // execute SELECT query 
+            stmt = conn.createStatement();
+            String u = "update Map set treasurePlace = '0 0' where Place = '"+x+" "+y+"'";
+            stmt.executeUpdate(u);
+             
+        } 
+        catch (Exception e) { 
+            System.out.println("Error: " + e); 
+        }
+}
+
+void CreateTable(){
+        try { 
+            Connection conn; 
+            Statement stmt; 
+            // load Connector/J 
+            //Driver d = (Driver)Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+            // establish connection 
+            conn = DriverManager.getConnection("jdbc:mysql://vrlab.ecs.csun.edu/alonso64db", "alonso64", "natalia866"); 
+           // execute SELECT query 
+            stmt = conn.createStatement();
+            String u = "DELETE FROM Player";
+            stmt.executeUpdate(u);
+            u = "DELETE FROM Treasure";
+            stmt.executeUpdate(u);
+            u = "DELETE FROM Map";
+            stmt.executeUpdate(u);
+            u = "DELETE FROM City";
+            stmt.executeUpdate(u);
+	    u = "INSERT INTO Player SELECT * FROM iPlayer";
+            stmt.executeUpdate(u);
+	    u = "INSERT INTO Treasure SELECT * FROM iTreasure";
+            stmt.executeUpdate(u);
+	    u = "INSERT INTO Map SELECT * FROM iMap";
+            stmt.executeUpdate(u);
+	    u = "INSERT INTO City SELECT * FROM iCity";
+            stmt.executeUpdate(u);		
+             
+        } 
+        catch (Exception e) { 
+            System.out.println("Error: " + e); 
+        }
+}

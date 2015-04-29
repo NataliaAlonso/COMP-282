@@ -1,0 +1,21 @@
+new Comparator<Node>() {
+        public int compare(Node node1, Node Node2) {
+            return (node1.getDistance() > node2.getDistance()) ? 1 : (node1.getDistance() < node2.getDistance() ? -1 : 0);}}
+
+while (current != destination)
+	add current to openList
+	for each neighbor in current:
+		calculate heuristic(distance from neighbor to destination) plus current.getDistance()
+		create neighbornode, add to open list
+	move current to closedList, pop from openList
+	current = openList.top()
+move current to pathStack()
+while(current != start)
+	add current's back to pathstack
+	current = current.getBack()
+add connectors between each point in pathStack
+	
+(int) Math.sqrt(Math.pow(wayPoints.get(tempPoint).getX()-wayPoints.get(current).getX(),2)+Math.pow(wayPoints.get(tempPoint).getY()-wayPoints.get(current).getY(),2)+Math.pow(wayPoints.get(tempPoint).getHeight()-wayPoints.get(current).getHeight(),2))
+
+
+return (patient1.isEmergencyCase() == patient2.isEmergencyCase()) ? (Integer.valueOf(patient1.getId()).compareTo(patient2.getId())): (patient1.isEmergencyCase() ? -1 : 1);

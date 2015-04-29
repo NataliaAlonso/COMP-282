@@ -1,0 +1,71 @@
+closedList.clear();
+openList.clear();
+HSOpenList.clear();
+HSClosedList.clear();                       
+animatePanel.clearTemporaryDrawables();
+
+player.setTreasure();
+
+current = nextPoint;
+treasureDestination = new Point(wayPoints.get(current).getMapX(),wayPoints.get(current).getMapY());
+openList.add(new Node((int)current.getX(),(int)current.getY(),(int) Math.sqrt(Math.pow(wayPoints.get(current).getX()-wayPoints.get(destination).getX(),2)+Math.pow(wayPoints.get(current).getY()-wayPoints.get(destination).getY(),2)+Math.pow(wayPoints.get(current).getHeight()-wayPoints.get(destination).getHeight(),2)),current));
+HSOpenList.add(current);
+
+while(player.getTreasure()==true){
+	checkStateToWait();
+	if(openList.size()>0){
+		
+		currentNode = openList.poll();
+		current = new Point(currentNode.getX(),currentNode.getY());
+
+		HSOpenList.remove(current);
+		closedList.put(current,currentNode.getBack());
+
+		Marker tm = new Marker((int)current.getX(),(int)current.getY(), Color.gray );
+		tm.setSize(2);
+		animatePanel.addTemporaryDrawable(tm);
+		
+		int numNeighbors = wayPoints.get(current).getNeighbors();
+		for(int i = 0; i < numNeighbors; i++){
+
+			Point tempPoint = wayPoints.get(current).getNeighborList().get(i);
+			if ((tempPoint.getX() == treasureDestination.getX()) && (tempPoint.getY() == treasureDestination.getY())){
+				i = numNeighbors+1;
+				player.setTreasure();
+				closedList.clear();
+				openList.clear();
+				HSOpenList.clear();
+				HSClosedList.clear();
+				animatePanel.clearTemporaryDrawables();
+			}
+			else{
+				Node tempNode = new Node((int)tempPoint.getX(),(int)tempPoint.getY(),currentNode.getDistance()+(int) Math.sqrt(Math.pow(wayPoints.get(tempPoint).getX()-wayPoints.get(current).getX(),2)+Math.pow(wayPoints.get(tempPoint).getY()-wayPoints.get(current).getY(),2)+Math.pow(wayPoints.get(tempPoint).getHeight()-wayPoints.get(current).getHeight(),2))+(int) Math.sqrt(Math.pow(wayPoints.get(tempPoint).getX()-wayPoints.get(treasureDestination).getX(),2)+Math.pow(wayPoints.get(tempPoint).getY()-wayPoints.get(treasureDestination).getY(),2)+Math.pow(wayPoints.get(tempPoint).getHeight()-wayPoints.get(treasureDestination).getHeight(),2)),current);
+				if( HSOpenList.contains(tempPoint)!=true && closedList.containsKey(tempPoint)!=true ){
+					openList.add(tempNode);
+					Marker om = new Marker((int)tempPoint.getX(),(int)tempPoint.getY(), Color.WHITE);
+					om.setSize(3);
+					animatePanel.addTemporaryDrawable(om);  
+				}
+
+			}
+
+		}
+	}
+	else{
+		player.setTreasure();
+		noPath = true;
+    }
+}
+if(noPath == true){
+                setStatus("Failure, no path. Player "+ player.getStrength()+"  $"+player.getWealth());
+                System.out.println("Failure, no path. Player "+ player.getStrength()+"  $"+player.getWealth());
+            }
+else{
+	Stack<Point> pathStack = new Stack<Point>();
+
+	pathStack.add(destination);
+	while(current != start){
+		pathStack.add(current);
+		current = closedList.get(current);
+	}
+}
